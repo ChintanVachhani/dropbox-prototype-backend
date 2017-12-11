@@ -48,3 +48,9 @@ fabric.properties
 /dropbox-prototype-frontend/node_modules/
 /.idea/
 /target/
+box/
+dropbox-prototype-frontend/.idea/inspectionProfiles/
+dropbox-prototype-frontend/.idea/jsLibraryMappings.xml
+dropbox-prototype-frontend/.idea/misc.xml
+dropbox-prototype-frontend/.idea/modules.xml
+dropbox-prototype-frontend/.idea/workspace.xml
