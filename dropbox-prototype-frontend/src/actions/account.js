@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const SERVER_URL = 'http://localhost:8000';
+const SERVER_URL = 'http://localhost:8080';
 
 export const GET_USER_ACCOUNT = 'GET_USER_ACCOUNT';
 export const GET_USER_ACCOUNT_SUCCESS = 'GET_USER_ACCOUNT_SUCCESS';
@@ -19,7 +19,7 @@ export function getAccount() {
     });
     axios({
       method: 'get',
-      url: `${SERVER_URL}/user/account?userId=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
+      url: `${SERVER_URL}/user/account?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
     })
       .then((result) => {
         if (result.response && result.response.status !== 200) {
@@ -50,7 +50,7 @@ export function updateAccount(data) {
     });
     axios({
       method: 'patch',
-      url: `${SERVER_URL}/user/account?&token=${localStorage.getItem('token')}`,
+      url: `${SERVER_URL}/user/account?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
       data: data,
     })
       .then((result) => {
@@ -82,7 +82,7 @@ export function getActivities() {
     });
     axios({
       method: 'get',
-      url: `${SERVER_URL}/activity/all?token=${localStorage.getItem('token')}`,
+      url: `${SERVER_URL}/activity/all?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
     })
       .then((result) => {
         if (result.response && result.response.status !== 200) {

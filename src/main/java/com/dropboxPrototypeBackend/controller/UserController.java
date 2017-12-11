@@ -12,6 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,8 +35,8 @@ public class UserController {
     @RequestMapping(value = "/signin", method = RequestMethod.POST)
     public Object signin(@RequestParam(value = "email") String email, @RequestParam(value = "password") String password) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        if (userRepository.findByEmail(email) != null) {
-            user = userRepository.findByEmail(email);
+        user = userRepository.findByEmail(email);
+        if (user != null) {
             if (bCryptPasswordEncoder.matches(password, user.getPassword())) {
                 String token = "";
                 return new SuccessResponse(200, "Successfully signed in.", token, email);
@@ -58,14 +62,44 @@ public class UserController {
                 e.printStackTrace();
                 return new ErrorResponse(401, "Signing up failed.", "Invalid Data.");
             }
+            Path rootPath = Paths.get(GlobalConstants.boxPath, email, "root");
+            Path tmpPath = Paths.get(GlobalConstants.boxPath, email, "tmp");
+            Path groupsPath = Paths.get(GlobalConstants.boxPath, email, "groups");
+            //if directory exists?
+            if (!Files.exists(rootPath)) {
+                try {
+                    Files.createDirectories(rootPath);
+                } catch (IOException e) {
+                    //fail to create directory
+                    e.printStackTrace();
+                }
+            }
+            //if directory exists?
+            if (!Files.exists(tmpPath)) {
+                try {
+                    Files.createDirectories(tmpPath);
+                } catch (IOException e) {
+                    //fail to create directory
+                    e.printStackTrace();
+                }
+            }
+            //if directory exists?
+            if (!Files.exists(groupsPath)) {
+                try {
+                    Files.createDirectories(groupsPath);
+                } catch (IOException e) {
+                    //fail to create directory
+                    e.printStackTrace();
+                }
+            }
             return new SuccessResponse(201, "Successfully signed up.", email);
         }
     }
 
 
     @CrossOrigin(origins = GlobalConstants.origin)
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public Object getUser(@RequestParam(value = "userId") String email) {
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public Object getUser(@RequestParam(value = "uid") String email) {
         user = userRepository.findByEmail(email);
         if (user != null) {
             return new SuccessResponse(200, "Successfully retrieved user information.", user);
@@ -90,7 +124,7 @@ public class UserController {
 
     @CrossOrigin(origins = GlobalConstants.origin)
     @RequestMapping(value = "/account", method = RequestMethod.GET)
-    public Object getUserAccount(@RequestParam(value = "userId") String email) {
+    public Object getUserAccount(@RequestParam(value = "uid") String email) {
         userAccount = userAccountRepository.findByEmail(email);
         if (userAccount != null) {
             return new SuccessResponse(200, "User account successfully retrieved.", userAccount);

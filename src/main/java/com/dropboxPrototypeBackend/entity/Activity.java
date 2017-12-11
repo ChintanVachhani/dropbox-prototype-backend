@@ -23,6 +23,14 @@ public class Activity implements Serializable {
         this.createdAt = new Date();
     }
 
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
+
     public String getEmail() {
         return email;
     }

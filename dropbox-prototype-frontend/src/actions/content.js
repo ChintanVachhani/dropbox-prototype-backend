@@ -2,7 +2,7 @@ import axios from 'axios';
 
 let fileDownload = require('react-file-download');
 
-const SERVER_URL = 'http://localhost:8000';
+const SERVER_URL = 'http://localhost:8080';
 
 export const GET_FILES = 'GET_FILES';
 export const GET_FILES_SUCCESS = 'GET_FILES_SUCCESS';
@@ -83,7 +83,7 @@ export function getFiles(path) {
     });
     axios({
       method: 'get',
-      url: `${SERVER_URL}/file?path=root${path}&token=${localStorage.getItem('token')}`,
+      url: `${SERVER_URL}/file?path=root${path}&uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
     })
       .then((result) => {
         if (result.response && result.response.status !== 200) {
@@ -114,7 +114,7 @@ export function getStarredFiles() {
     });
     axios({
       method: 'get',
-      url: `${SERVER_URL}/file/starred?token=${localStorage.getItem('token')}`,
+      url: `${SERVER_URL}/file/starred?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
     })
       .then((result) => {
         if (result.response && result.response.status !== 200) {
@@ -145,7 +145,7 @@ export function getDirectories(path) {
     });
     axios({
       method: 'get',
-      url: `${SERVER_URL}/directory?path=root${path}&token=${localStorage.getItem('token')}`,
+      url: `${SERVER_URL}/directory?path=root${path}&uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
     })
       .then((result) => {
         if (result.response && result.response.status !== 200) {
@@ -176,7 +176,7 @@ export function getStarredDirectories() {
     });
     axios({
       method: 'get',
-      url: `${SERVER_URL}/directory/starred?token=${localStorage.getItem('token')}`,
+      url: `${SERVER_URL}/directory/starred?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
     })
       .then((result) => {
         if (result.response && result.response.status !== 200) {
@@ -207,7 +207,7 @@ export function uploadFile(data) {
     });
     axios({
       method: 'post',
-      url: `${SERVER_URL}/file?token=${localStorage.getItem('token')}`,
+      url: `${SERVER_URL}/file?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
       data: data,
     })
       .then((result) => {
@@ -240,7 +240,7 @@ export function downloadFile(file) {
     });
     axios({
       method: 'get',
-      url: `${SERVER_URL}/file/download?userId=${file.userId}&name=${file.name}&path=${file.path}&token=${localStorage.getItem('token')}`,
+      url: `${SERVER_URL}/file/download?userId=${file.userId}&name=${file.name}&path=${file.path}&uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
     }).then((result) => {
       fileDownload(result.data, file.name);
     });
@@ -254,7 +254,7 @@ export function starFile(data) {
     });
     axios({
       method: 'patch',
-      url: `${SERVER_URL}/file/star?token=${localStorage.getItem('token')}`,
+      url: `${SERVER_URL}/file/star?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
       data: data,
     })
       .then((result) => {
@@ -286,7 +286,7 @@ export function deleteFile(data) {
     });
     axios({
       method: 'delete',
-      url: `${SERVER_URL}/file?token=${localStorage.getItem('token')}`,
+      url: `${SERVER_URL}/file?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
       data: data,
     })
       .then((result) => {
@@ -318,7 +318,7 @@ export function createDirectory(data) {
     });
     axios({
       method: 'put',
-      url: `${SERVER_URL}/directory?token=${localStorage.getItem('token')}`,
+      url: `${SERVER_URL}/directory?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
       data: data,
     })
       .then((result) => {
@@ -351,7 +351,7 @@ export function downloadDirectory(directory) {
     });
     axios({
       method: 'get',
-      url: `${SERVER_URL}/directory/download?userId=${directory.userId}&name=${directory.name}&path=${directory.path}&token=${localStorage.getItem('token')}`,
+      url: `${SERVER_URL}/directory/download?userId=${directory.userId}&name=${directory.name}&path=${directory.path}&uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
     }).then((result) => {
       fileDownload(result.data, directory.name + '.zip');
     });
@@ -365,7 +365,7 @@ export function starDirectory(data) {
     });
     axios({
       method: 'patch',
-      url: `${SERVER_URL}/directory/star?token=${localStorage.getItem('token')}`,
+      url: `${SERVER_URL}/directory/star?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
       data: data,
     })
       .then((result) => {
@@ -397,7 +397,7 @@ export function deleteDirectory(data) {
     });
     axios({
       method: 'delete',
-      url: `${SERVER_URL}/directory?token=${localStorage.getItem('token')}`,
+      url: `${SERVER_URL}/directory?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
       data: data,
     })
       .then((result) => {
@@ -429,7 +429,7 @@ export function getActivities(count) {
     });
     axios({
       method: 'get',
-      url: `${SERVER_URL}/activity?count=${count}&token=${localStorage.getItem('token')}`,
+      url: `${SERVER_URL}/activity?count=${count}&uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
     })
       .then((result) => {
         if (result.response && result.response.status !== 200) {
@@ -460,7 +460,7 @@ export function createShareLink(id) {
     });
     axios({
       method: 'patch',
-      url: `${SERVER_URL}/file/link?token=${localStorage.getItem('token')}`,
+      url: `${SERVER_URL}/file/link?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
       data: {_id: id},
     })
       .then((result) => {
@@ -492,7 +492,7 @@ export function createShareLinkDirectory(id) {
     });
     axios({
       method: 'patch',
-      url: `${SERVER_URL}/directory/link?token=${localStorage.getItem('token')}`,
+      url: `${SERVER_URL}/directory/link?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
       data: {_id: id},
     })
       .then((result) => {
@@ -525,7 +525,7 @@ export function userSearch(searchString) {
     });
     axios({
       method: 'get',
-      url: `${SERVER_URL}/user/search?searchString=${searchString}&token=${localStorage.getItem('token')}`,
+      url: `${SERVER_URL}/user/search?searchString=${searchString}&uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
     })
       .then((result) => {
         if (result.response && result.response.status !== 200) {
@@ -556,7 +556,7 @@ export function shareFile(data) {
     });
     axios({
       method: 'patch',
-      url: `${SERVER_URL}/file/share?token=${localStorage.getItem('token')}`,
+      url: `${SERVER_URL}/file/share?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
       data: data,
     })
       .then((result) => {
@@ -588,7 +588,7 @@ export function shareDirectory(data) {
     });
     axios({
       method: 'patch',
-      url: `${SERVER_URL}/directory/share?token=${localStorage.getItem('token')}`,
+      url: `${SERVER_URL}/directory/share?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
       data: data,
     })
       .then((result) => {
@@ -621,7 +621,7 @@ export function downloadSharedDirectory(directory) {
     });
     axios({
       method: 'post',
-      url: `${SERVER_URL}/sharedDirectory/download?token=${localStorage.getItem('token')}`,
+      url: `${SERVER_URL}/sharedDirectory/download?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
       data: directory,
     }).then((result) => {
       fileDownload(result.data, directory.name + '.zip');
@@ -637,7 +637,7 @@ export function downloadSharedFile(file) {
     });
     axios({
       method: 'post',
-      url: `${SERVER_URL}/sharedFile/download?token=${localStorage.getItem('token')}`,
+      url: `${SERVER_URL}/sharedFile/download?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
       data: file,
     }).then((result) => {
       fileDownload(result.data, file.name + '.zip');
@@ -652,7 +652,7 @@ export function starSharedFile(data) {
     });
     axios({
       method: 'patch',
-      url: `${SERVER_URL}/sharedFile/star?token=${localStorage.getItem('token')}`,
+      url: `${SERVER_URL}/sharedFile/star?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
       data: data,
     })
       .then((result) => {
@@ -684,7 +684,7 @@ export function starSharedDirectory(data) {
     });
     axios({
       method: 'patch',
-      url: `${SERVER_URL}/sharedDirectory/star?token=${localStorage.getItem('token')}`,
+      url: `${SERVER_URL}/sharedDirectory/star?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
       data: data,
     })
       .then((result) => {
@@ -719,7 +719,7 @@ export function listSharedFiles() {
     });
     axios({
       method: 'get',
-      url: `${SERVER_URL}/sharedFile/list?token=${localStorage.getItem('token')}`,
+      url: `${SERVER_URL}/sharedFile/list?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
     })
       .then((result) => {
         if (result.response && result.response.status !== 200) {
@@ -750,7 +750,7 @@ export function getSharedFiles(data) {
     });
     axios({
       method: 'get',
-      url: `${SERVER_URL}/sharedFile?path=${data.path}&name=${data.name}&token=${localStorage.getItem('token')}`,
+      url: `${SERVER_URL}/sharedFile?path=${data.path}&name=${data.name}&uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
     })
       .then((result) => {
         if (result.response && result.response.status !== 200) {
@@ -781,7 +781,7 @@ export function listSharedDirectories() {
     });
     axios({
       method: 'get',
-      url: `${SERVER_URL}/sharedDirectory/list?token=${localStorage.getItem('token')}`,
+      url: `${SERVER_URL}/sharedDirectory/list?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
     })
       .then((result) => {
         if (result.response && result.response.status !== 200) {
@@ -812,7 +812,7 @@ export function getSharedDirectories(data) {
     });
     axios({
       method: 'get',
-      url: `${SERVER_URL}/sharedDirectory?path=${data.path}&name=${data.name}&token=${localStorage.getItem('token')}`,
+      url: `${SERVER_URL}/sharedDirectory?path=${data.path}&name=${data.name}&uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
     })
       .then((result) => {
         if (result.response && result.response.status !== 200) {

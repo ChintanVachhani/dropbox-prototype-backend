@@ -6,5 +6,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 public interface DirectoryRepository extends MongoRepository<Directory, String> {
-    List<Directory> findByEmail(String email);
+    List<Directory> findByOwner(String email);
 }
