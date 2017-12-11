@@ -45,4 +45,6 @@ fabric.properties
 # Custom
 *.log
 *.iml
-node_modules
+/dropbox-prototype-frontend/node_modules/
+/.idea/
+/target/
