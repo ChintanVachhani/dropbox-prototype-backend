@@ -8,6 +8,7 @@ import com.dropboxPrototypeBackend.entity.User;
 import com.dropboxPrototypeBackend.entity.UserAccount;
 import com.dropboxPrototypeBackend.repository.UserAccountRepository;
 import com.dropboxPrototypeBackend.repository.UserRepository;
+import com.dropboxPrototypeBackend.util.TokenAuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +39,7 @@ public class UserController {
         user = userRepository.findByEmail(email);
         if (user != null) {
             if (bCryptPasswordEncoder.matches(password, user.getPassword())) {
-                String token = "";
+                String token = TokenAuthenticationService.addAuthentication(email);
                 return new SuccessResponse(200, "Successfully signed in.", token, email);
             } else {
                 return new ErrorResponse(401, "Signing in failed.", "Invalid credentials.");

@@ -59,7 +59,7 @@ public class GroupFileController {
         HttpHeaders headers = null;
         ByteArrayResource resource = null;
         try {
-            Path source = Paths.get(GlobalConstants.boxPath, group.getCreator(), "groups", name);
+            Path source = Paths.get(GlobalConstants.boxPath, group.getCreator(), "groups", group.getName(), name);
 
             headers = new HttpHeaders();
             headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
@@ -89,7 +89,7 @@ public class GroupFileController {
         try {
             // Get the file and save it in root
             byte[] bytes = file.getBytes();
-            Path writePath = Paths.get(GlobalConstants.boxPath, group.getCreator(), "groups", file.getOriginalFilename());
+            Path writePath = Paths.get(GlobalConstants.boxPath, group.getCreator(), "groups", group.getName(), file.getOriginalFilename());
             Files.write(writePath, bytes);
         } catch (IOException e) {
             e.printStackTrace();

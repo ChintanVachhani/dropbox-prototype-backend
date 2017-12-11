@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface GroupRepository extends MongoRepository<Group, String> {
     List<Group> findByCreator(String creator);
+    Group findByName(String name);
     Group findBy_id(String _id);
 }
