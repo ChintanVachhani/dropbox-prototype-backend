@@ -5,6 +5,7 @@ import com.dropboxPrototypeBackend.entity.*;
 import com.dropboxPrototypeBackend.repository.ActivityRepository;
 import com.dropboxPrototypeBackend.repository.DirectoryRepository;
 import com.dropboxPrototypeBackend.repository.SharedDirectoryRepository;
+import com.dropboxPrototypeBackend.util.ZipDirectory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -50,20 +51,27 @@ public class DirectoryController {
             strData = new String(decrypted);
 
             Path source = Paths.get(GlobalConstants.boxPath, strData, directoryName);
+            Path sourceZip = Paths.get(GlobalConstants.boxPath, Paths.get(strData).getRoot().toString(), "tmp", directoryName + ".zip");
+            ZipDirectory zipDirectory = new ZipDirectory(sourceZip.toString(), source.toString());
 
             headers = new HttpHeaders();
             headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
             headers.add("Pragma", "no-cache");
             headers.add("Expires", "0");
 
-            resource = new ByteArrayResource(Directories.readAllBytes(source));
+            resource = new ByteArrayResource(Files.readAllBytes(sourceZip));
         } catch (Exception e) {
             e.printStackTrace();
         }
+        /*try {
+            Files.deleteIfExists(sourceZip);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
         return ResponseEntity.ok()
                 .headers(headers)
                 .contentLength(resource.contentLength())
-                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .contentType(MediaType.parseMediaType("application/zip"))
                 .body(resource);
     }
 
@@ -126,48 +134,66 @@ public class DirectoryController {
     @CrossOrigin(origins = GlobalConstants.origin)
     @RequestMapping(value = "/download", method = RequestMethod.GET)
     public ResponseEntity<Resource> downloadDirectory(@RequestParam(value = "path") String path, @RequestParam(value = "name") String name, @RequestParam(value = "uid") String email) {
+        Path source = Paths.get(GlobalConstants.boxPath, email, path, name);
+        Path sourceZip = Paths.get(GlobalConstants.boxPath, email, "tmp", name + ".zip");
+        ZipDirectory zipDirectory = new ZipDirectory(sourceZip.toString(), source.toString());
         HttpHeaders headers = null;
         ByteArrayResource resource = null;
         try {
-            Path source = Paths.get(GlobalConstants.boxPath, email, path, name);
-
             headers = new HttpHeaders();
             headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
             headers.add("Pragma", "no-cache");
             headers.add("Expires", "0");
 
-            resource = new ByteArrayResource(Directories.readAllBytes(source));
+            resource = new ByteArrayResource(Files.readAllBytes(sourceZip));
         } catch (IOException e) {
             e.printStackTrace();
         }
         activityRepository.save(new Activity(email, "Downloaded " + name));
+        /*try {
+            Files.deleteIfExists(sourceZip);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
         return ResponseEntity.ok()
                 .headers(headers)
                 .contentLength(resource.contentLength())
-                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .contentType(MediaType.parseMediaType("application/zip"))
                 .body(resource);
     }
 
     @CrossOrigin(origins = GlobalConstants.origin)
     @RequestMapping(value = "", method = RequestMethod.POST)
     public Object createDirectory(@RequestParam(value = "name") String name, @RequestParam(value = "path") String path, @RequestParam(value = "owner") String owner, @RequestParam(value = "uid") String email) {
+        Boolean directoryExists = false;
+        String directoryName = name;
+        int index = 0;
+        do {
+            Path source = Paths.get(GlobalConstants.boxPath, email, "root", path, directoryName);
+            directoryExists = false;
+            if (Files.exists(source)) {
+                ++index;
+                directoryName = name + " (" + index + ")";
+                directoryExists = true;
+            }
+
+        } while (directoryExists);
+
+        Path source = Paths.get(GlobalConstants.boxPath, email, "root", path, directoryName);
         try {
-            // Get the directory and save it in root
-            byte[] bytes = directory.getBytes();
-            Path writePath = Paths.get(GlobalConstants.boxPath, email, "root", path, directory.getOriginalDirectoryname());
-            Directories.write(writePath, bytes);
+            Files.createDirectories(source);
         } catch (IOException e) {
             e.printStackTrace();
+            return new ErrorResponse(500, "Cannot create directory.", "Internal server error.");
         }
         try {
-            if (directoryRepository.findByOwnerAndNameAndPath(owner, directory.getOriginalDirectoryname(), Paths.get("root", path).toString()) == null) {
-                directoryRepository.save(new Directory(directory.getOriginalDirectoryname(), Paths.get("root", path).toString(), owner));
-            }
-            activityRepository.save(new Activity(email, "Uploaded " + directory.getOriginalDirectoryname()));
+            directoryRepository.save(new Directory(directoryName, Paths.get("root", path).toString(), owner));
         } catch (Exception e) {
             e.printStackTrace();
+            return new ErrorResponse(400, "Cannot create directory.", "Invalid Data.");
         }
-        return new SuccessResponse(201, "Directory successfully uploaded.", directory.getOriginalDirectoryname());
+        activityRepository.save(new Activity(email, "Created " + directoryName));
+        return new SuccessResponse(201, "Directory successfully created.", directoryName);
     }
 
     @CrossOrigin(origins = GlobalConstants.origin)
@@ -192,7 +218,7 @@ public class DirectoryController {
     @CrossOrigin(origins = GlobalConstants.origin)
     @RequestMapping(value = "/share", method = RequestMethod.PATCH)
     public Object shareDirectory(@RequestParam(value = "_id") String _id, @RequestParam(value = "name") String name, @RequestParam(value = "path") String path, @RequestParam(value = "owner") String owner, @RequestParam(value = "sharers") List<String> sharers, @RequestParam(value = "uid") String email) {
-        //TODO share directories
+        //TODO recursive sharing directories
         directory = directoryRepository.findBy_id(_id);
         if (directory != null) {
             for (String sharer : sharers) {

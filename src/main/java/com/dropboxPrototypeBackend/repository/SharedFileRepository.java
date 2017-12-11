@@ -6,7 +6,8 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 public interface SharedFileRepository extends MongoRepository<SharedFile, String> {
-    List<SharedFile> findByOwner(String email);
-    List<SharedFile> findBySharer(String email);
+    SharedFile findBy_id(String _id);
+    List<SharedFile> findBySharerAndShowIsTrue(String email);
     SharedFile findByNameAndPathAndOwnerAndSharer(String name, String path, String owner, String sharer);
+    List<SharedFile> findByPathAndSharer(String path, String sharer);
 }
