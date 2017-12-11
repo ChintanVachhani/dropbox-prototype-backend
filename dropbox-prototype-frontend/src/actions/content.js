@@ -81,7 +81,7 @@ export function getFiles(path) {
     dispatch({
       type: GET_FILES,
     });
-    axios({
+    axios({ headers: {         "Content-Type": "application/x-www-form-urlencoded"      },
       method: 'get',
       url: `${SERVER_URL}/file?path=root${path}&uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
     })
@@ -112,7 +112,7 @@ export function getStarredFiles() {
     dispatch({
       type: GET_STARRED_FILES,
     });
-    axios({
+    axios({ headers: {         "Content-Type": "application/x-www-form-urlencoded"      },
       method: 'get',
       url: `${SERVER_URL}/file/starred?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
     })
@@ -143,7 +143,7 @@ export function getDirectories(path) {
     dispatch({
       type: GET_DIRECTORIES,
     });
-    axios({
+    axios({ headers: {         "Content-Type": "application/x-www-form-urlencoded"      },
       method: 'get',
       url: `${SERVER_URL}/directory?path=root${path}&uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
     })
@@ -174,7 +174,7 @@ export function getStarredDirectories() {
     dispatch({
       type: GET_STARRED_DIRECTORIES,
     });
-    axios({
+    axios({ headers: {         "Content-Type": "application/x-www-form-urlencoded"      },
       method: 'get',
       url: `${SERVER_URL}/directory/starred?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
     })
@@ -205,7 +205,7 @@ export function uploadFile(data) {
     dispatch({
       type: UPLOAD_FILE,
     });
-    axios({
+    axios({ headers: {         "Content-Type": "application/x-www-form-urlencoded"      },
       method: 'post',
       url: `${SERVER_URL}/file?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
       data: data,
@@ -238,7 +238,7 @@ export function downloadFile(file) {
       type: DOWNLOAD_FILE,
       response: file.name + ' downloaded.',
     });
-    axios({
+    axios({ headers: {         "Content-Type": "application/x-www-form-urlencoded"      },
       method: 'get',
       url: `${SERVER_URL}/file/download?userId=${file.userId}&name=${file.name}&path=${file.path}&uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
     }).then((result) => {
@@ -252,7 +252,7 @@ export function starFile(data) {
     dispatch({
       type: STAR_FILE,
     });
-    axios({
+    axios({ headers: {         "Content-Type": "application/x-www-form-urlencoded"      },
       method: 'patch',
       url: `${SERVER_URL}/file/star?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
       data: data,
@@ -284,7 +284,7 @@ export function deleteFile(data) {
     dispatch({
       type: DELETE_FILE,
     });
-    axios({
+    axios({ headers: {         "Content-Type": "application/x-www-form-urlencoded"      },
       method: 'delete',
       url: `${SERVER_URL}/file?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
       data: data,
@@ -316,7 +316,7 @@ export function createDirectory(data) {
     dispatch({
       type: CREATE_DIRECTORY,
     });
-    axios({
+    axios({ headers: {         "Content-Type": "application/x-www-form-urlencoded"      },
       method: 'put',
       url: `${SERVER_URL}/directory?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
       data: data,
@@ -349,7 +349,7 @@ export function downloadDirectory(directory) {
       type: DOWNLOAD_DIRECTORY,
       response: directory.name + ' downloaded.',
     });
-    axios({
+    axios({ headers: {         "Content-Type": "application/x-www-form-urlencoded"      },
       method: 'get',
       url: `${SERVER_URL}/directory/download?userId=${directory.userId}&name=${directory.name}&path=${directory.path}&uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
     }).then((result) => {
@@ -363,7 +363,7 @@ export function starDirectory(data) {
     dispatch({
       type: STAR_DIRECTORY,
     });
-    axios({
+    axios({ headers: {         "Content-Type": "application/x-www-form-urlencoded"      },
       method: 'patch',
       url: `${SERVER_URL}/directory/star?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
       data: data,
@@ -395,7 +395,7 @@ export function deleteDirectory(data) {
     dispatch({
       type: DELETE_DIRECTORY,
     });
-    axios({
+    axios({ headers: {         "Content-Type": "application/x-www-form-urlencoded"      },
       method: 'delete',
       url: `${SERVER_URL}/directory?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
       data: data,
@@ -427,7 +427,7 @@ export function getActivities(count) {
     dispatch({
       type: GET_ACTIVITIES,
     });
-    axios({
+    axios({ headers: {         "Content-Type": "application/x-www-form-urlencoded"      },
       method: 'get',
       url: `${SERVER_URL}/activity?count=${count}&uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
     })
@@ -458,7 +458,7 @@ export function createShareLink(id) {
     dispatch({
       type: CREATE_SHARE_LINK,
     });
-    axios({
+    axios({ headers: {         "Content-Type": "application/x-www-form-urlencoded"      },
       method: 'patch',
       url: `${SERVER_URL}/file/link?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
       data: {_id: id},
@@ -490,7 +490,7 @@ export function createShareLinkDirectory(id) {
     dispatch({
       type: CREATE_SHARE_LINK_DIRECTORY,
     });
-    axios({
+    axios({ headers: {         "Content-Type": "application/x-www-form-urlencoded"      },
       method: 'patch',
       url: `${SERVER_URL}/directory/link?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
       data: {_id: id},
@@ -523,7 +523,7 @@ export function userSearch(searchString) {
     dispatch({
       type: USER_SEARCH,
     });
-    axios({
+    axios({ headers: {         "Content-Type": "application/x-www-form-urlencoded"      },
       method: 'get',
       url: `${SERVER_URL}/user/search?searchString=${searchString}&uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
     })
@@ -554,7 +554,7 @@ export function shareFile(data) {
     dispatch({
       type: SHARE_FILE,
     });
-    axios({
+    axios({ headers: {         "Content-Type": "application/x-www-form-urlencoded"      },
       method: 'patch',
       url: `${SERVER_URL}/file/share?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
       data: data,
@@ -586,7 +586,7 @@ export function shareDirectory(data) {
     dispatch({
       type: SHARE_DIRECTORY,
     });
-    axios({
+    axios({ headers: {         "Content-Type": "application/x-www-form-urlencoded"      },
       method: 'patch',
       url: `${SERVER_URL}/directory/share?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
       data: data,
@@ -619,7 +619,7 @@ export function downloadSharedDirectory(directory) {
       type: SHARED_DOWNLOAD_DIRECTORY,
       response: directory.name + ' downloaded.',
     });
-    axios({
+    axios({ headers: {         "Content-Type": "application/x-www-form-urlencoded"      },
       method: 'post',
       url: `${SERVER_URL}/sharedDirectory/download?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
       data: directory,
@@ -635,7 +635,7 @@ export function downloadSharedFile(file) {
       type: SHARED_DOWNLOAD_FILE,
       response: file.name + ' downloaded.',
     });
-    axios({
+    axios({ headers: {         "Content-Type": "application/x-www-form-urlencoded"      },
       method: 'post',
       url: `${SERVER_URL}/sharedFile/download?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
       data: file,
@@ -650,7 +650,7 @@ export function starSharedFile(data) {
     dispatch({
       type: SHARED_STAR_FILE,
     });
-    axios({
+    axios({ headers: {         "Content-Type": "application/x-www-form-urlencoded"      },
       method: 'patch',
       url: `${SERVER_URL}/sharedFile/star?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
       data: data,
@@ -682,7 +682,7 @@ export function starSharedDirectory(data) {
     dispatch({
       type: SHARED_STAR_DIRECTORY,
     });
-    axios({
+    axios({ headers: {         "Content-Type": "application/x-www-form-urlencoded"      },
       method: 'patch',
       url: `${SERVER_URL}/sharedDirectory/star?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
       data: data,
@@ -717,7 +717,7 @@ export function listSharedFiles() {
     dispatch({
       type: SHARED_LIST_FILES,
     });
-    axios({
+    axios({ headers: {         "Content-Type": "application/x-www-form-urlencoded"      },
       method: 'get',
       url: `${SERVER_URL}/sharedFile/list?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
     })
@@ -748,7 +748,7 @@ export function getSharedFiles(data) {
     dispatch({
       type: SHARED_GET_FILES,
     });
-    axios({
+    axios({ headers: {         "Content-Type": "application/x-www-form-urlencoded"      },
       method: 'get',
       url: `${SERVER_URL}/sharedFile?path=${data.path}&name=${data.name}&uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
     })
@@ -779,7 +779,7 @@ export function listSharedDirectories() {
     dispatch({
       type: SHARED_LIST_DIRECTORIES,
     });
-    axios({
+    axios({ headers: {         "Content-Type": "application/x-www-form-urlencoded"      },
       method: 'get',
       url: `${SERVER_URL}/sharedDirectory/list?uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
     })
@@ -810,7 +810,7 @@ export function getSharedDirectories(data) {
     dispatch({
       type: SHARED_GET_DIRECTORIES,
     });
-    axios({
+    axios({ headers: {         "Content-Type": "application/x-www-form-urlencoded"      },
       method: 'get',
       url: `${SERVER_URL}/sharedDirectory?path=${data.path}&name=${data.name}&uid=${localStorage.getItem('userId')}&token=${localStorage.getItem('token')}`,
     })

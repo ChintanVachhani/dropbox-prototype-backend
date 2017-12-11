@@ -21,7 +21,7 @@ export function signin(data) {
     dispatch({
       type: SIGNIN,
     });
-    axios({
+    axios({ headers: {         "Content-Type": "application/x-www-form-urlencoded"      },
       method: 'post',
       url: `${SERVER_URL}/user/signin`,
       data: data,
@@ -57,7 +57,7 @@ export function signup(data) {
     dispatch({
       type: SIGNUP,
     });
-    axios({
+    axios({ headers: {         "Content-Type": "application/x-www-form-urlencoded"      },
       method: 'post',
       url: `${SERVER_URL}/user/signup`,
       data: data,
@@ -95,7 +95,7 @@ export function getUser(data) {
     dispatch({
       type: GET_USER,
     });
-    axios({
+    axios({ headers: {         "Content-Type": "application/x-www-form-urlencoded"      },
       method: 'get',
       url: `${SERVER_URL}/user?userId=${data.userId}&token=${data.token}`,
     })
