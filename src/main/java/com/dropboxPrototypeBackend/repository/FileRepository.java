@@ -9,4 +9,5 @@ public interface FileRepository extends MongoRepository<File, String> {
     List<File> findByOwnerAndPath(String email, String path);
     List<File> findByOwnerAndStarredIsTrue(String email);
     File findBy_id(String id);
+    File findByOwnerAndNameAndPath(String owner, String name, String path);
 }

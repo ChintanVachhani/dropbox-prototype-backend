@@ -8,4 +8,5 @@ import java.util.List;
 public interface SharedDirectoryRepository extends MongoRepository<SharedDirectory, String> {
     List<SharedDirectory> findByOwner(String email);
     List<SharedDirectory> findBySharer(String email);
+    SharedDirectory findByNameAndPathAndOwnerAndSharer(String name, String path, String owner, String sharer);
 }
